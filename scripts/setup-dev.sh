@@ -31,14 +31,15 @@ sed -i "s|@FRONT_PORT|$CONTAINER_EXTERNAL_PORT|;" $PROJECT_DIR/.env
 
 popd > /dev/null
 
-cp docker/docker-compose.development.yaml docker-compose.yaml
+cp docker/docker-compose.production.yaml docker-compose.yaml
 
 docker compose build --force-rm --no-cache
-
 docker compose up --force-recreate -d
 
 docker exec -it $CONTAINER_NAME chown -R nginx:nginx /var/www/app/storage
 docker exec -it $CONTAINER_NAME chown -R nginx:nginx /var/www/app/bootstrap/cache
+
+# Agora rodar composer install após garantir que as permissões estão corretas
 docker exec -it $CONTAINER_NAME composer install
 docker exec -it $CONTAINER_NAME php artisan key:generate
 docker restart $CONTAINER_NAME

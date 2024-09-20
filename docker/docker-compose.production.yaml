@@ -14,11 +14,11 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
 
-  app:
+  web:
     container_name: ${CONTAINER_NAME}
     build:
       context: .
-      dockerfile: ./docker/Dockerfile-backend
+      dockerfile: ./docker/Dockerfile
     image: ${CONTAINER_NAME}
     restart: unless-stopped
     ports:
@@ -26,4 +26,4 @@ services:
     volumes:
       - ./src/${PROJECT_DIR}:/var/www/app
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
-    command: /bin/sh -c "yarn && yarn build && npx serve ./dist -l ${CONTAINER_EXTERNAL_PORT}"
+    command: /bin/sh -c "npm && npm build && npx serve ./dist -l ${CONTAINER_EXTERNAL_PORT}"
